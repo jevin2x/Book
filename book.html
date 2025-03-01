@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Flipper</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .book {
+            position: relative;
+            width: 150px;
+            height: 200px;
+            perspective: 1000px;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            transform-origin: left;
+            transition: transform 0.8s, z-index 0.8s;
+        }
+
+        /* Different page colors */
+        .page1 { background-color: lightcoral; z-index: 3; }
+        .page2 { background-color: lightblue; z-index: 2; }
+        .page3 { background-color: lightgreen; z-index: 1; }
+
+        .flipped {
+            transform: rotateY(-180deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book">
+        <div class="page page1" onclick="flipPage(0)">Page 1</div>
+        <div class="page page2" onclick="flipPage(1)">Page 2</div>
+        <div class="page page3" onclick="flipPage(2)">Page 3</div>
+    </div>
+
+    <script>
+        let pages = document.querySelectorAll(".page");
+
+        function flipPage(index) {
+            if (!pages[index].classList.contains("flipped")) {
+                // Flip forward
+                pages[index].classList.add("flipped");
+
+                if (index === 0) { // Page 1 flipped
+                    pages[0].style.zIndex = 1;
+                    pages[1].style.zIndex = 3;
+                } else if (index === 1) { // Page 2 flipped
+                    pages[1].style.zIndex = 2;
+                } else if (index === 2) { // Page 3 flipped
+                    pages[2].style.zIndex = 3;
+                }
+            } else {
+                // Flip back
+                pages[index].classList.remove("flipped");
+
+                if (index === 2) { // Page 3 back-flipped
+                    pages[2].style.zIndex = 1;
+                    pages[1].style.zIndex = 3;
+                } else if (index === 1) { // Page 2 back-flipped
+                    pages[1].style.zIndex = 2;
+                } else if (index === 0) { // Page 1 back-flipped, returns to z-index 3
+                    pages[0].style.zIndex = 5;
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
